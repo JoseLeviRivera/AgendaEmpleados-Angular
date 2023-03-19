@@ -20,10 +20,16 @@ La aplicación del Backend se encuentra en el siguiente enlace. [Aqui]().
 
 Imagénes del proyecto.
 <br>
-![primera]()
+![primera](src/assets/github/img.png)
 <br>
-![segunda]()
+![tercera](src/assets/github/img3.png)
 <br>
-![tercera]()
+![cuarta](src/assets/github/img4.png)
 <br>
-![cuarta]()
+![cuarta](src/assets/github/img1.png)
+<br>
+![cuarta](src/assets/github/img5.png)
+<br>
+![cuarta](src/assets/github/img6.png)
+
+
