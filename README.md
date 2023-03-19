@@ -1,27 +1,29 @@
 # AgendaAngular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
+Este proyecto es generado con [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Para correr `ng serve -o` para ejecutar el servridor de desarrollo. Navega a `http://localhost:4200/` o solamente abrirá el navegador. Esta aplicación automáticamente recargara los cambios, por lo que no se tendrá que ejecutarse varias veces.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Corre `ng build` para construir el proyecto.
 
 ## Further help
-
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Descripción del Proyecto
+Es una aplicación que consume un microservicio en springboot, hace las operaciones básicas del crud utilizando la libreria rxjs con Httpclient, ademas se añadió cierto diseño con el framework de css(bootstrap). 
+<br>
+La aplicación del Backend se encuentra en el siguiente enlace. [Aqui]().
+
+Imagénes del proyecto.
+<br>
+![primera]()
+<br>
+![segunda]()
+<br>
+![tercera]()
+<br>
+![cuarta]()
