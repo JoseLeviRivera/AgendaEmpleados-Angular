@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component,OnInit } from '@angular/core';
+import { Component,OnChanges,OnInit, SimpleChanges } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Employee } from './interfaces/employee';
 import { EmployeeService } from './services/employee.service';
@@ -9,12 +9,22 @@ import { EmployeeService } from './services/employee.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, OnChanges{
+  cargando = false;
+  [x: string]: any;
   public employees: Employee[] = [];
   public editEmployee!: Employee;
   public deleteEmployee!: Employee;
+  public search: string = '';
+  public valorSearch: string = '';
+  public mensaje: string = "Espere, por favor";
 
   constructor(private employeeService: EmployeeService) { }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.getEmployees();
+  }
   
 
   ngOnInit(): void {
@@ -26,9 +36,11 @@ export class AppComponent implements OnInit{
     this.employeeService.getEmployees().subscribe(
        (response: Employee[]) => {
         this.employees = response;
+        this.cargando = true;
+        this.mensaje = "¡La información ya cargo!"
        }, 
        (error: HttpErrorResponse) => {
-        alert(error.message);
+        //alert(error.message);
        }
     );
   }
@@ -41,7 +53,6 @@ export class AppComponent implements OnInit{
     button.style.display = 'none';
     button.setAttribute('data-bs-toggle', 'modal');
    
-
     if(mode === 'edit'){
       this.editEmployee = employee;
       button.setAttribute('data-bs-target', '#updateEmployeeModal')
@@ -73,14 +84,13 @@ export class AppComponent implements OnInit{
     document.getElementById('add-employee-form')?.click();
     this.employeeService.addEmployee(addForm.value).subscribe(
       (response: Employee) => {
-          //Todo: Esto no ess buena practica, buscar manera de no recargar la pagina
+          //Todo: Esto no es buena practica, buscar manera de no recargar la pagina
           location.reload();
       }, 
       (error: HttpErrorResponse) => {
         alert(error.message)
       }
     );
-
   }
 
   public onUpdateEmloyee(employee: Employee){
@@ -90,7 +100,6 @@ export class AppComponent implements OnInit{
       },(error: HttpErrorResponse) => {
         alert(error.message)
       }
-
     );
   }
 
@@ -110,21 +119,31 @@ export class AppComponent implements OnInit{
   }
 
 
-  public searchEmployee(key:string):void{
+  public onSearchEmployee(_search:string):void {
+    this.search = _search;
+    console.log(this.search);
     const results: Employee[] = [];
     for(const employee of this.employees){
-      if(employee.name.toLowerCase().indexOf(key.toLowerCase())!= -1
-      || employee.email.toLowerCase().indexOf(key.toLowerCase())!= -1
-      || employee.phone.toLowerCase().indexOf(key.toLowerCase())!= -1
-      || employee.jobTitle.toLowerCase().indexOf(key.toLowerCase())!= -1
+      if(employee.name.toLowerCase().indexOf(this.search.toLowerCase())!= -1
+      || employee.email.toLowerCase().indexOf(this.search.toLowerCase())!= -1
+      || employee.phone.toLowerCase().indexOf(this.search.toLowerCase())!= -1
+      || employee.jobTitle.toLowerCase().indexOf(this.search.toLowerCase())!= -1
       ){
         results.push(employee);
       }
     }
     this.employees = results;
-    if(results.length === 0 || !key){
+    if(results.length === 0 || !this.search){
       this.getEmployees();
     }
   }
   
+  public clearSearch():void{
+    if(this.search.length >= 0){
+      this.valorSearch = '';
+      this.search = '';
+      this.getEmployees();
+    }
+    
+  }
 }

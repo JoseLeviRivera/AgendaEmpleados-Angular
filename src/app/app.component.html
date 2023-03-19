@@ -1,132 +1,186 @@
 <nav class="navbar bg-primary navbar-expand-lg" data-bs-theme="dark">
-    <div class="container-fluid">
-      <a class="navbar-brand">Empleados</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                 <li class="nav-item">
-                  <a class="nav-link" (click)="onOpenModalAdd('add')">Agregar Empleado</a>
-                </li>
-        </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Jhon Smith..." aria-label="Search">
-          <button class="btn btn-primary" type="submit">Buscar</button>
-        </form>
-      </div>
+  <div class="container-fluid">
+    <a class="navbar-brand"><i class="fa-solid fa-users"></i> Empleados</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" (click)="onOpenModalAdd('add')"><i class="fa-solid fa-plus"></i> Agregar Empleado</a>
+        </li>
+        <li class="nav-item">
+          <input class="form-control mb-2" id="searchForm" type="text" placeholder="Buscar" aria-label="Search"
+            [(ngModel)]="valorSearch" #txtSearch (keyup)="onSearchEmployee(txtSearch.value)">
+        </li>
+        &nbsp;
+        <li class="nav-item">
+          <button (click)="clearSearch()" class="btn btn-primary"><i class="fa-solid fa-delete-left"></i></button>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
 
+&nbsp;
+<div align="center" *ngIf="!cargando">
+  <div class="loader loader--style1" title="0">
+      <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px"
+          viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+          <path opacity="0.2" fill="#000"
+              d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+    s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+    c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+          <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+    C22.32,8.481,24.301,9.057,26.013,10.047z">
+              <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20"
+                  to="360 20 20" dur="0.5s" repeatCount="indefinite" />
+          </path>
+      </svg>
+  </div>
+  <p>{{mensaje}}</p>
+</div>
 
 <div *ngFor="let employee of employees" id="main-container">
-    <div class="card">
-        <div class="card-body">
-            <h4>{{employee?.name}}</h4>
-            <h6>Ocupacion: {{employee?.jobTitle}}</h6>
-            <h6>Email: {{employee?.email}}</h6>
-            <h6>Telefono: {{employee?.phone}}</h6>
-            <button (click)="onOpenModal(employee, 'edit')" class="btn btn-primary" type="submit">Editar </button>
-            <button (click)="onOpenModal(employee, 'delete')" class="btn btn-danger" type="submit">Eliminar</button>
-      </div>
-</div>
-
-<!-- Modal Add -->
-<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Empleado</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <!--<form #addForm="ngForm" (ngSubmit)="onAddEmloyee(addForm)"> -->
-        <form  #formularioAdd="ngForm" (ngSubmit)="onAddEmloyee(formularioAdd)">
-          <div class="form-group">
-             <label for="name">Name</label>
-             <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Name" required>
-          </div>
-          <div class="form-group">
-             <label for="email">Email Address</label>
-             <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
-          </div>
-          <div class="form-group">
-             <label for="phone">Job title</label>
-             <input type="text" ngModel name="jobTitle" class="form-control" id="jobTile" placeholder="Job title" required>
-          </div>
-          <div class="form-group">
-             <label for="phone">Phone</label>
-             <input type="text" ngModel name="phone" class="form-control" id="phone" placeholder="Phone" required>
-          </div>
-          <div class="form-group">
-             <label for="phone">Image URL</label>
-             <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-             <button [disabled]="formularioAdd.invalid" type="submit" class="btn btn-primary" > Guardar</button>
-          </div>
-          </form>
+  <div class="card w-100">
+    <div class="card-body w-100">
+      <div class="row">
+        <div class="col">
+          <img
+            src="{{employee?.imageUrl}}"
+            class="img-fluid rounded-circle mr-2">
+        </div>
+        <div class="col">
+          <h4>{{employee?.name}}</h4>
+          <h6>Ocupacion: {{employee?.jobTitle}}</h6>
+          <h6>Email: {{employee?.email}}</h6>
+          <h6>Telefono: {{employee?.phone}}</h6>
+          <button (click)="onOpenModal(employee, 'edit')" class="btn btn-primary" type="submit">Editar <i
+              class="fa-solid fa-pencil"></i> </button>
+          &nbsp;
+          <button (click)="onOpenModal(employee, 'delete')" class="btn btn-danger" type="submit">Eliminar <i
+              class="fa-solid fa-trash"></i></button>
+        </div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
       </div>
     </div>
-  </div>
-</div>
 
-<!--Modal update Employee-->
-<div class="modal fade" id="updateEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="updateEmployeeModalLabel">Editar a {{editEmployee?.name}}</h5>        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form #editForm="ngForm">
-          <div class="form-group">
-             <label for="name">Name</label>
-             <input type="text" ngModel="{{editEmployee?.name}}" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name">
+
+
+    <!-- Modal Add -->
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Empleado</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <input type="hidden" ngModel="{{editEmployee?.id}}" name="id" class="form-control" id="id" placeholder="Email">
-          <div class="form-group">
-             <label for="email">Email Address</label>
-             <input type="email" ngModel="{{editEmployee?.email}}" name="email" class="form-control" id="email" placeholder="Email">
+          <div class="modal-body">
+            <form #formularioAdd="ngForm" (ngSubmit)="onAddEmloyee(formularioAdd)">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Will Smith..."
+                  required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" ngModel name="email" class="form-control" id="email"
+                  placeholder="willsmithemail.com..." required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Job title</label>
+                <input type="text" ngModel name="jobTitle" class="form-control" id="jobTile" placeholder="Actor..."
+                  required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" ngModel name="phone" class="form-control" id="phone" placeholder="2345456456"
+                  required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Image URL</label>
+                <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image.jpg"
+                  required>
+              </div>
+              <div class="modal-footer">
+                <button [disabled]="formularioAdd.invalid" type="submit" class="btn btn-primary"> Guardar</button>
+              </div>
+            </form>
           </div>
-          <div class="form-group">
-             <label for="phone">Job title</label>
-             <input type="text" ngModel="{{editEmployee?.jobTitle}}" name="jobTitle" class="form-control" id="jobTitle" placeholder="Job title">
-          </div>
-          <div class="form-group">
-             <label for="phone">Phone</label>
-             <input type="text" ngModel="{{editEmployee?.phone}}" name="phone" class="form-control" id="phone" name="phone" placeholder="Phone">
-          </div>
-          <div class="form-group">
-             <label for="phone">Image URL</label>
-             <input type="text" ngModel="{{editEmployee?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL">
-          </div>
-          <div class="modal-footer">
-             <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Cerrar</button>
-             <button (click)="onUpdateEmloyee(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Actualizar</button>
-          </div>
-       </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!--Delete Employee Modal-->
-<div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Empleado</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>¿Estás seguro que deseas eliminar a {{deleteEmployee?.name}}?</p>
-           <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-              <button (click)="onDeleteEmployee(deleteEmployee.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
-           </div>
+    <!--Modal update Employee-->
+    <div class="modal fade" id="updateEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateEmployeeModalLabel">Editar a {{editEmployee?.name}}</h5> <button
+              type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form #editForm="ngForm">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" ngModel="{{editEmployee?.name}}" name="name" class="form-control" id="name"
+                  aria-describedby="emailHelp" placeholder="Name">
+              </div>
+              <input type="hidden" ngModel="{{editEmployee?.id}}" name="id" class="form-control" id="id"
+                placeholder="Email">
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" ngModel="{{editEmployee?.email}}" name="email" class="form-control" id="email"
+                  placeholder="Email">
+              </div>
+              <div class="form-group">
+                <label for="phone">Job title</label>
+                <input type="text" ngModel="{{editEmployee?.jobTitle}}" name="jobTitle" class="form-control"
+                  id="jobTitle" placeholder="Job title">
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" ngModel="{{editEmployee?.phone}}" name="phone" class="form-control" id="phone"
+                  name="phone" placeholder="Phone">
+              </div>
+              <div class="form-group">
+                <label for="phone">Image URL</label>
+                <input type="text" ngModel="{{editEmployee?.imageUrl}}" name="imageUrl" class="form-control"
+                  id="imageUrl" placeholder="Image URL">
+              </div>
+              <div class="modal-footer">
+                <button (click)="onUpdateEmloyee(editForm.value)" data-dismiss="modal"
+                  class="btn btn-primary">Actualizar</button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <!--Delete Employee Modal-->
+    <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Empleado</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>¿Estás seguro que deseas eliminar a {{deleteEmployee?.name}}?</p>
+            <div class="modal-footer">
+              <button (click)="onDeleteEmployee(deleteEmployee.id)" class="btn btn-danger"
+                data-dismiss="modal">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    

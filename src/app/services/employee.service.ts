@@ -2,20 +2,24 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Employee } from '../interfaces/employee';
-import { environment } from '../../environments/environment';
+//import { environment } from '../../environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
 
+  cargado = true;
+
    //constante de la url de la api
    private apiServerUrl = environment.apiBaseUrl;
+   public employees: Employee[] | undefined;
 
   constructor(private httpCliente: HttpClient) { 
-
   }
 
+  
   public getEmployees(): Observable<Employee[]> {
     return this.httpCliente.get<Employee[]>(`${this.apiServerUrl}/employee/all`);
   }
